@@ -33,6 +33,10 @@ end
 
 local capabilities = vim.lsp.protocol.make_client_capabilities()
 
+local flags = {
+   debounce_text_changes = 150,
+}
+
 capabilities.textDocument.completion.completionItem = {
    documentationFormat = { "markdown", "plaintext" },
    snippetSupport = true,
@@ -54,6 +58,7 @@ capabilities.textDocument.completion.completionItem = {
 lspconfig.sumneko_lua.setup {
    on_attach = M.on_attach,
    capabilities = capabilities,
+   flags = flags,
 
    settings = {
       Lua = {
@@ -76,7 +81,7 @@ lspconfig.sumneko_lua.setup {
 local addlsp_confs = utils.load_config().plugins.options.lspconfig.setup_lspconf
 
 if #addlsp_confs ~= 0 then
-   require(addlsp_confs).setup_lsp(M.on_attach, capabilities)
+   require(addlsp_confs).setup_lsp(M.on_attach, capabilities, flags)
 end
 
 return M
